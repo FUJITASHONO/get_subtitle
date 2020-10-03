@@ -13,7 +13,7 @@ with open('../data/URL_list.tsv' ) as f:
             for url in raw:
                 c += 1
                 if c >= next_index:
-                    print("URL index:", end=":")
+                    print("URL index", end=":")
                     print(c)
                     print(url)
                     Scrayping.scrayping(url)
