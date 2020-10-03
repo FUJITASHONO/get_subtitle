@@ -20,7 +20,7 @@ def open_file(url):
     options.add_argument('--start-maximized');
     # options.add_argument('--headless'); # ※ヘッドレスモードを使用する場合、コメントアウトを外す
 
-    executable_path = "/Users/admin/Downloads/chromedriver" #chromedriver.exeのパス
+    executable_path = "" #chromedriver.exeのパス
     driver = webdriver.Chrome(executable_path = executable_path) #chromedriverのパス
     driver.get(url)
     time.sleep(20)
@@ -67,13 +67,14 @@ def get_japanese_text(driver):
     from text_process import Text_process
     import time
     japanese_elements = get_japanese_elements(driver)
-    for n in range(0,15):
+    for n in range(0,15): #回数が多いほど確実に字幕が取れるが，計算量が多くなり，時間も長くなる
         if len(japanese_elements) == 0:
             play(driver)
             time.sleep(0.01)
             japanese_elements = get_japanese_elements(driver)
             pause(driver)
         else:
+            #print(n) #何回目で字幕が取れたかの確認
             break
     if len(japanese_elements) == 0:
         japanese_text = ""
@@ -93,6 +94,7 @@ def get_english_text(driver):
             english_elements = get_english_elements(driver)
             pause(driver)
         else:
+            #print(n) #何回目で字幕が取れたかの確認
             break
     if len(english_elements) == 0:
         english_text = ""
