@@ -16,4 +16,4 @@ get_subtitle/src 上で以下のようにmain.pyを実行．
 $ python main.py [次に実行するURLのインデックス]  
 get_subtitle/Data/URL_list.tsv のURLから順にスクレイピングが行われる． 
 途中からでも実行できるようにmain.pyの後に次に実行するURLのインデックス(integer)を入力．  
-数話進むと，プログラムが停止してしまう．プログラムを終了させ，途中まで進んだURLのインデックスを python main.py の後に入力し，再度実行．
+数話進むと，プログラムが停止してしまう．プログラムを終了させ，途中まで進んだURLのインデックス(ターミナル上のURL index)を python main.py の後に入力し，再度実行．
