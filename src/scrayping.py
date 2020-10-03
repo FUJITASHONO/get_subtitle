@@ -20,7 +20,8 @@ def open_file(url):
     options.add_argument('--start-maximized');
     # options.add_argument('--headless'); # ※ヘッドレスモードを使用する場合、コメントアウトを外す
 
-    driver = webdriver.Chrome(executable_path=) #chromedriverのパス
+    executable_path = "/Users/admin/Downloads/chromedriver" #chromedriver.exeのパス
+    driver = webdriver.Chrome(executable_path = executable_path) #chromedriverのパス
     driver.get(url)
     time.sleep(20)
     driver.implicitly_wait(10)
@@ -44,9 +45,9 @@ def open_file(url):
                 driver.close()
                 driver.quit()
                 time.sleep(5)
-                driver = webdriver.Chrome(executable_path=)#chromedriverのパス
+                driver = webdriver.Chrome(executable_path = executable_path)#chromedriverのパス
                 driver.get(url)
-        return title, driver
+    return title, driver, f
 
 def get_japanese_elements(driver):
     from bs4 import BeautifulSoup
@@ -66,41 +67,41 @@ def get_japanese_text(driver):
     from text_process import Text_process
     import time
     japanese_elements = get_japanese_elements(driver)
-            for n in range(0,15):
-                if len(japanese_elements) == 0:
-                    play(driver)
-                    time.sleep(0.01)
-                    japanese_elements = get_japanese_elements(driver)
-                    pause(driver)
-                else:
-                    break
-            if len(japanese_elements) == 0:
-                japanese_text = ""
-            else:
-                japanese_element = str(japanese_elements[0])
-                japanese_text = Text_process.clean_word(Text_process.remove_bracket(japanese_element))
+    for n in range(0,15):
+        if len(japanese_elements) == 0:
+            play(driver)
+            time.sleep(0.01)
+            japanese_elements = get_japanese_elements(driver)
+            pause(driver)
+        else:
+            break
+    if len(japanese_elements) == 0:
+        japanese_text = ""
+    else:
+        japanese_element = str(japanese_elements[0])
+        japanese_text = Text_process.clean_word(Text_process.remove_bracket(japanese_element))
     return japanese_text
 
 def get_english_text(driver):
     from text_process import Text_process
     import time
     english_elements = get_english_elements(driver)
-        for n in range(0,15):
-            if len(english_elements) == 0:
-                play(driver)
-                time.sleep(0.01)
-                english_elements = get_english_elements(driver)
-                pause(driver)
-            else:
-                break
+    for n in range(0,15):
         if len(english_elements) == 0:
-            english_text = ""
+            play(driver)
+            time.sleep(0.01)
+            english_elements = get_english_elements(driver)
+            pause(driver)
         else:
-            english_element = str(english_elements[0])
-            english_text = Text_process.clean_word(Text_process.remove_bracket(english_element))
+            break
+    if len(english_elements) == 0:
+        english_text = ""
+    else:
+        english_element = str(english_elements[0])
+        english_text = Text_process.clean_word(Text_process.remove_bracket(english_element))
     return english_text
 
-def judge_finish(former_japanese_text, japanese_text, former_english_text, english_text, driver):
+def judge_finish(former_japanese_text, japanese_text, former_english_text, english_text, driver, url):
     import time
     #取ってきた英語と日本語が前と同じもので，最後60秒に入ったら終了
     if former_japanese_text == japanese_text and former_english_text == english_text:
@@ -210,7 +211,7 @@ class Scrayping:
         import numpy as np
         import csv
         
-        title, driver = open_file(url)
+        title, driver, f = open_file(url)
         #念のためtitleがAnimelonではないことを確認
         if title != "Animelon":       
             writer = csv.writer(f, delimiter='\t')
@@ -240,7 +241,7 @@ class Scrayping:
                 pair_text.append(english_text)
 
                 #最後の字幕かどうかの判定
-                if judge_finish(former_japanese_text, japanese_text, former_english_text, english_text, driver) == True:
+                if judge_finish(former_japanese_text, japanese_text, former_english_text, english_text, driver, url) == True:
                     break
                     
                 #Nextボタンが効いてない(同じ字幕が現れている)とき,play stopを押してから，もう一度pair_textを取る

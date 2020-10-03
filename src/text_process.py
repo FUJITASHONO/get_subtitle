@@ -1,4 +1,4 @@
-class Text_process
+class Text_process:
     def remove_bracket(text):
         check = True                                            # whileループの終了条件に使用
         word_s = '<'                                            # タグの先頭<を検索する時に使用
